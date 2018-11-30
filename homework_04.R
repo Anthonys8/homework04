@@ -37,3 +37,26 @@ murders$fitted <- firstModel$fitted.values
 murders$residuals <- firstModel$residuals
 murders %>% ggplot(aes(x = fitted, y = residuals)) +
   geom_point()
+
+
+# Second Model
+secondModel <- lm(murdrate ~ perc1019 + perc2029 + percblack + percmale + rpcpersinc,
+                  data = murders)
+summary(secondModel)
+
+# Standardised residuals plot for second model
+
+murders <- murders %>% 
+  mutate(
+    stand_res = rstandard(secondModel)
+  )
+murders %>% ggplot(aes(x = stand_res)) +
+  geom_histogram() + xlab("Standardized residuals")
+
+# Residual vs Fitted Value for second model
+
+murders$fitted <- secondModel$fitted.values
+murders$residuals <- secondModel$residuals
+murders %>% ggplot(aes(x = fitted, y = residuals)) +
+  geom_point()
+
